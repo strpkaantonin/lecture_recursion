@@ -21,24 +21,25 @@ def read_data(file_name, key="ordered_numbers"):
     return seqs[key]
 
 
-def binary_search(seq, number):
+def binary_search(seq, number, left, right):
     """
     Function performs binary search on !!ordered!! sequence and stores position of match if found.
     :param seq: (list): list of numbers
     :param number: (int): number to match within sequence
+    :param left: position where binary_search starts
+    :param right: position where binary_search ends
     :return: (int, None): index of match if found, None otherwise
     """
-    left, right = (0, len(seq) - 1)
 
     while left <= right:
         middle = (right + left) // 2
 
-        if number < seq[middle]:
-            right = middle - 1
-        elif number > seq[middle]:
-            left = middle + 1
-        else:
+        if number == seq[middle]:
             return middle
+        elif number > seq[middle]:
+            return binary_search(seq, number, middle + 1, right)
+        elif number < seq[middle]:
+            return binary_search(seq, number, left, middle - 1)
     return None
 
 
@@ -46,7 +47,8 @@ def main(file_name, number):
     sequence = read_data(file_name=file_name, key="ordered_numbers")
 
     # iterative binary search
-    binary_search(sequence, number=number)
+    print(binary_search(sequence, number, 0, len(sequence)))
+    print(len(sequence))
 
 
 if __name__ == "__main__":
